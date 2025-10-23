@@ -1,2 +1,12 @@
 With the continuous advancement of artificial intelligence technology, sentiment analysis, as an important branch of Natural Language Processing (NLP), has gradually become a focus of research. The system aims to provide technical support for fields such as text mining and public opinion analysis. This paper employs the BERT pre-trained model combined with deep learning techniques to complete the sentiment classification task. Through experimental comparisons, the system was ultimately set to train for three epochs, with the F1 score as the evaluation metric. The Hugging Face Trainer module was utilized to achieve efficient training and validation. The experimental results demonstrate that the system exhibits good classification performance on the test set.During the system implementation, the contextual perception ability of BERT was innovatively integrated with traditional text processing techniques, providing an effective solution for Chinese sentiment analysis tasks. This paper also developed a web platform based on the Django framework, using Django's built-in admin system in the backend and the Django-simpleUI plugin for beautification. 
-<img width="682" height="398" alt="image" src="https://github.com/user-attachments/assets/83e6a56a-cfea-4bd3-b7eb-8ad360217608" />
+<img width="682" height="400" alt="image" src="https://github.com/user-attachments/assets/6d90d933-53c7-43a5-948f-40cde99ca7aa" />
+<img width="682" height="398" alt="image" src="https://github.com/user-attachments/assets/8ccf9497-b1f0-4b67-8a25-d7ef839bde90" />
+<img width="686" height="398" alt="image" src="https://github.com/user-attachments/assets/972773eb-2687-472f-852c-a67f8416645c" />
+<img width="682" height="404" alt="image" src="https://github.com/user-attachments/assets/842055f5-0896-4f36-88f4-ce59c2619cb0" />
+<img width="656" height="318" alt="image" src="https://github.com/user-attachments/assets/8f7ea670-8970-4825-a12d-58b521f145d2" />
+<img width="622" height="330" alt="image" src="https://github.com/user-attachments/assets/8e3a2fe2-7ede-48f5-924b-726bfd1222ef" />
+<img width="682" height="398" alt="image" src="https://github.com/user-attachments/assets/411db9a5-1ccd-48c4-9dcd-d0840000a770" />
+<img width="682" height="398" alt="image" src="https://github.com/user-attachments/assets/d05c8a9b-e9a3-41c6-beaa-69420d66083f" />
+<img width="682" height="338" alt="image" src="https://github.com/user-attachments/assets/61abd8ee-f310-41fe-a49b-6c98968a0b4f" />
+<img width="682" height="340" alt="image" src="https://github.com/user-attachments/assets/76dc22a1-9255-4b6a-9fdb-e9bd86aed902" />
+<img width="682" height="398" alt="image" src="https://github.com/user-attachments/assets/42e7b9dc-28cc-4987-9c4b-d47dead703ef" />
