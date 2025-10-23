@@ -1,0 +1,334 @@
+{% extends 'front_base.html' %}
+
+{% block title %}
+    文本极性检测
+{% endblock %}
+
+{% block header %}
+    <script src="{% static 'js/check.js' %}"></script>
+    <style>
+        .container {
+            position: relative;
+            min-height: 50px;
+            margin-bottom: 0px;
+            border: 1px solid transparent;
+        }
+        .main .box {
+            height: 72vh;
+        }
+        .text-check {
+            display: flex;
+            justify-content: space-between;
+            background-color: #cbe3fc;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 11px;
+            border-radius: 8px;
+        }
+        .input-area {
+            flex: 1;
+            margin-right: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .image-area {
+            flex: 1;
+            text-align: center;
+            padding: 11px;
+        }
+        .image-area img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+        .btn {
+            margin-left: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .upload-area {
+            height: 178px;
+            padding: 20px;
+            background-color: #cbe3fc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .upload-area h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .file-input {
+            margin-bottom: 15px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #007bff;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        #upload-status {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .result-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .result-item {
+            margin-bottom: 5px;
+        }
+        .page-header {
+            margin: -38px 0 15px 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block main-container %}
+    <div class="container">
+        <div class="box">
+            <div class="box-header page-header">
+                <h2>文本检测系统</h2>
+            </div>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <div class="text-check">
+                <div class="input-area">
+                    <textarea id="input-text"></textarea>
+                    <div class="btn-container">
+                        <button class="btn btn-primary" id="check-btn">提交信息</button>
+                    </div>
+                    <div class="result-area" id="result-area" style="display: none;">
+                        <div class="result-title">分析结果:</div>
+                        <div class="result-item">主要情感: <span id="main-emotion"></span></div>
+                        <div class="result-item">情感类别: <span id="sentiment"></span></div>
+                        <div class="result-item">置信度: <span id="confidence"></span>%</div>
+                    </div>
+                </div>
+                <div class="image-area">
+                    <img src="{% static 'image/文本情感分析   (2).jpg' %}" alt="文本情感分析">
+                </div>
+            </div>
+
+            <div class="upload-area">
+                <h3>上传表格进行检测</h3>
+                <div class="file-input">
+                    <input type="file" id="file-input" accept=".xlsx, .csv">
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="upload-btn">上传检测</button>
+                    <button class="btn btn-success download-btn" id="download-btn">下载检测结果</button>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <span id="upload-status"></span>
+            </div>
+        </div>
+    </div>
+
+{#    <script>#}
+{#        document.getElementById('check-btn').addEventListener('click', function() {#}
+{#            var text = document.getElementById('input-text').value;#}
+{#            if (text.trim() === '') {#}
+{#                alert('请输入文本进行分析');#}
+{#                return;#}
+{#            }#}
+{##}
+{#            // 使用AJAX发送请求到后端#}
+{#            fetch('{% url 'emotion_analysis' %}', {#}
+{#                method: 'POST',#}
+{#                headers: {#}
+{#                    'X-CSRFToken': '{{ csrf_token }}',#}
+{#                    'Content-Type': 'application/x-www-form-urlencoded',#}
+{#                },#}
+{#                body: 'text=' + encodeURIComponent(text)#}
+{#            })#}
+{#            .then(response => response.json())#}
+{#            .then(data => {#}
+{#                // 显示结果#}
+{#                document.getElementById('main-emotion').textContent = data.main_emotion;#}
+{#                document.getElementById('sentiment').textContent = data.sentiment;#}
+{#                document.getElementById('confidence').textContent = data.confidence;#}
+{#                document.getElementById('result-area').style.display = 'block';#}
+{#            })#}
+{#            .catch(error => {#}
+{#                console.error('Error:', error);#}
+{#                alert('情感分析失败，请重试。');#}
+{#            });#}
+{#        });#}
+{##}
+{#        // 文件上传检测#}
+{#        document.getElementById('upload-btn').addEventListener('click', function() {#}
+{#            var fileInput = document.getElementById('file-input');#}
+{#            var file = fileInput.files[0];#}
+{#            if (!file) {#}
+{#                alert('请选择文件进行上传');#}
+{#                return;#}
+{#            }#}
+{##}
+{#            var formData = new FormData();#}
+{#            formData.append('file', file);#}
+{##}
+{#            document.getElementById('upload-status').textContent = '上传中...';#}
+{#            document.querySelector('.progress').style.width = '0%';#}
+{##}
+{#            <!-- 单文本情感分析 -->#}
+{#fetch('{% url 'emotion_analysis' %}', {#}
+{#    method: 'POST',#}
+{#    headers: {#}
+{#        'X-CSRFToken': '{{ csrf_token }}',#}
+{#        'Content-Type': 'application/x-www-form-urlencoded',#}
+{#    },#}
+{#    body: 'text=' + encodeURIComponent(text)#}
+{#})#}
+{#.then(response => response.json())#}
+{#.then(data => {#}
+{#    // 显示结果#}
+{#})#}
+{#.catch(error => {#}
+{#    console.error('Error:', error);#}
+{#    alert('情感分析失败，请重试。');#}
+{#});#}
+{##}
+{#<!-- 批量文本情感分析 -->#}
+{#fetch('{% url 'batch_emotion_analysis' %}', {#}
+{#    method: 'POST',#}
+{#    headers: {#}
+{#        'X-CSRFToken': '{{ csrf_token }}',#}
+{#    },#}
+{#    body: formData#}
+{#})#}
+{#.then(response => response.json())#}
+{#.then(data => {#}
+{#    // 处理结果#}
+{#})#}
+{#.catch(error => {#}
+{#    console.error('Error:', error);#}
+{#    alert('文件上传失败，请重试。');#}
+{#});#}
+{#        });#}
+{#    </script>#}
+
+    <script>
+        document.getElementById('check-btn').addEventListener('click', function() {
+            var text = document.getElementById('input-text').value;
+            if (text.trim() === '') {
+                alert('请输入文本进行分析');
+                return;
+            }
+
+            // 使用AJAX发送请求到后端
+            fetch('{% url 'emotion_analysis' %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'text=' + encodeURIComponent(text)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 显示结果
+                document.getElementById('main-emotion').textContent = data.main_emotion;
+                document.getElementById('sentiment').textContent = data.sentiment;
+                document.getElementById('confidence').textContent = data.confidence;
+                document.getElementById('result-area').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('情感分析失败，请重试。');
+            });
+        });
+
+        // 文件上传检测
+           document.getElementById('upload-btn').addEventListener('click', function() {
+            var fileInput = document.getElementById('file-input');
+            var file = fileInput.files[0];
+            if (!file) {
+                alert('请选择文件进行上传');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('upload-status').textContent = '上传中...';
+            document.querySelector('.progress').style.width = '0%';
+
+            // 发送文件上传请求
+            fetch('{% url 'batch_emotion_analysis' %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200 && data.data && data.data.download_url) {
+                    document.getElementById('upload-status').textContent = '上传成功，点击下方按钮下载结果';
+                    document.getElementById('download-btn').style.display = 'inline-block';
+                    document.getElementById('download-btn').href = data.data.download_url;
+                    document.querySelector('.progress').style.width = '100%';
+                } else {
+                    alert('上传失败: ' + (data.message || '未知错误'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('文件上传失败，请重试。');
+            });
+        });
+
+        // 下载检测结果
+        document.getElementById('download-btn').addEventListener('click', function() {
+            var downloadUrl = this.href;
+            if (downloadUrl) {
+                window.location.href = downloadUrl;
+            } else {
+                alert('下载失败，请重试。');
+            }
+        });
+    </script>
+{% endblock %}

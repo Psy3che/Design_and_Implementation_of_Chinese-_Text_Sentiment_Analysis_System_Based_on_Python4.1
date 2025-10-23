@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分析结果</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0); /* 优化背景 */
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+        }
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between; /* 优化布局 */
+        }
+        .image-card1 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 48%; /* 调整宽度以适应横排 */
+            text-align: center;
+        }
+         .image-card2 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 48%; /* 调整宽度以适应横排 */
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .image-card {
+                width: 100%;
+            }
+        }
+        .image-card img {
+             display: block; /* 将图片设置为块级元素 */
+            margin: auto; /* 水平居中 */
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .image-card h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        #loading {
+            text-align: center;
+            padding: 50px 0;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+        }
+        .spinner-border {
+            margin-right: 15px;
+        }
+        .download-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+        /* 添加页脚样式 */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+             color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .footer p {
+            font-size: 0.9rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>文本分析结果</h1>
+            <p>以下是本次分析的可视化结果</p>
+        </div>
+
+        <div id="loading">
+            <div class="spinner-border text-primary"></div>
+            <span>生成中，请稍候...</span>
+        </div>
+
+        <div id="wordcloud" class="image-container" style="display: none;">
+            <div class="image-card">
+                <h2>词云图</h2>
+                <img id="wordcloud-img" src="{{ MEDIA_URL }}/media/analysis_results/{{ wordcloud_url }}" alt="词云图">
+                <button class="download-btn" onclick="downloadPDF('wordcloud')">下载词云图</button>
+            </div>
+
+            <div class="image-card">
+                <h2>关键词柱状图</h2>
+                <img id="barchart-img" src="{{ MEDIA_URL }}/media/analysis_results/{{ bar_chart_url }}" alt="关键词柱状图">
+                <button class="download-btn" onclick="downloadPDF('barchart')">下载柱状图</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+                   <p>欢迎加入文本情感分析系统</p>
+			Copyright © 2025 Psy3che. 保留所有权利。
+    </div>
+
+    <script>
+        // 模拟延迟加载
+        setTimeout(function() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('wordcloud').style.display = 'block';
+        }, 1000);
+
+        // 下载功能
+        function downloadPDF(chartType) {
+            // 获取图片URL
+            let imgURL;
+            if (chartType === 'wordcloud') {
+                imgURL = document.getElementById('wordcloud-img').src;
+            } else if (chartType === 'barchart') {
+                imgURL = document.getElementById('barchart-img').src;
+            }
+
+            // 创建一个隐藏的a标签
+            const link = document.createElement('a');
+            link.href = imgURL;
+
+            // 设置下载的文件名
+            let fileName;
+            if (chartType === 'wordcloud') {
+                fileName = '词云图';
+            } else if (chartType === 'barchart') {
+                fileName = '关键词柱状图';
+            }
+            link.download = fileName;
+
+            // 模拟点击
+            document.body.appendChild(link);
+            link.click();
+
+            // 移除a标签
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

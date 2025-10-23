@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--视口设置，适配移动端-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>识别系统{% block title %}{% endblock %}</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/ ">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3 ">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/myalert.js' %}"></script>
+
+    {% block header %}
+
+    {% endblock %}
+
+</head>
+ <style>
+     .navbar-static-top.navbar-inverse{
+          background-color: darkseagreen;
+     }
+
+     .collapse  {
+         background-color:darkseagreen;
+     }
+.main{
+    background-color: lightyellow;
+}
+.footer{
+    background-color: lightskyblue;
+}
+.active{
+    background-color: #5bc0de;
+}
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px;
+    border: 1px solid transparent
+}
+
+.navbar-inverse .navbar-nav>.active>a,.navbar-inverse .navbar-nav>.active>a:focus,.navbar-inverse .navbar-nav>.active>a:hover{
+     background-color:darkseagreen;
+}
+.ac-gf-footer-legal-copyright {
+    text-align: center;
+}
+
+.main .box{
+    height: 60vh;
+}
+
+    </style>
+
+
+
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container"  >
+
+        <!--定义菜单-->
+        <div class="collapse navbar-collapse" id="mymenu">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{% url 'image_handle:index' %}">首页</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'image_handle:check' %}">文本极性检测</a>
+                </li>
+                <li>
+                    <a href="{% url 'image_handle:text_analysis' %}">文件词频分析</a>
+                </li>
+                <li>
+                    <a href="/admin/" target="_blank">后台管理</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="main">
+    <div class="container">
+        {% block main-container %}
+
+        {% endblock %}
+    </div>
+</div>
+
+<div class="footer ">
+    <div class="container">
+        <div class="row footer-top">
+            <div class="col-sm-6 col-lg-6">
+            </div>
+
+            <div class="col-sm-6  col-lg-5 col-lg-offset-1">
+                <div class="row about">
+                    <div class="col-xs-3">
+                        <h4>关于</h4>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="">关于我们</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-3">
+                        <h4>联系方式</h4>
+                        <ul class="list-unstyled">
+
+                            <li>
+                                <a href="https://github.com/Psy3che ">GitHub</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+		</div>
+
+            </div>
+        </div>
+        <hr>
+        <div class="row footer-bottom">
+                   <div class="ac-gf-footer-legal-copyright">
+                       <p>欢迎加入文本情感分析系统</p>
+			Copyright © 2025 Psy3che. 保留所有权利。
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
